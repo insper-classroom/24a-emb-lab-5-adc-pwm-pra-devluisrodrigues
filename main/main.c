@@ -44,11 +44,9 @@ void x_adc_task(void *p) {
     adc_init();
     adc_gpio_init(26);
 
-    float result;
-
     while (1) {
         adc_select_input(0); // Select ADC input 0 (GPIO26)
-        result = adc_read();
+        float result = adc_read();
 
         result = result - 2048;
         result = result / 8;
@@ -58,7 +56,7 @@ void x_adc_task(void *p) {
         }
 
         data.val = result;
-        data.axis = 0;
+        data.axis = 1;
         xQueueSend(xQueueAdc, &data, portMAX_DELAY);
         vTaskDelay(pdMS_TO_TICKS(100));
     }
@@ -69,11 +67,9 @@ void y_adc_task(void *p) {
     adc_init();
     adc_gpio_init(27);
 
-    float result;
-
     while (1) {
         adc_select_input(1); // Select ADC input 1 (GPIO27)
-        result = adc_read();
+        float result = adc_read();
 
         result = result - 2048;
         result = result / 8;
@@ -82,7 +78,7 @@ void y_adc_task(void *p) {
             result = 0;
         }
         data.val = result;
-        data.axis = 1;
+        data.axis = 0;
         xQueueSend(xQueueAdc, &data, portMAX_DELAY);
         vTaskDelay(pdMS_TO_TICKS(100));
     }
